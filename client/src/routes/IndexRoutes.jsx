@@ -9,6 +9,7 @@ import DashboardRoutes from './DashboardRoutes'
 import SignInPage from '../pages/SignInPage'
 import SignUpPage from '../pages/SignUpPage'
 import NotFoundPage from '../pages/NotFoundPage'
+import { withAuthorizedUser, withUnauthorizedUser } from '../hoc/withAuthorization'
 
 const routes = [
   {
@@ -18,17 +19,17 @@ const routes = [
   },
   {
     path: '/signin',
-    component: SignInPage,
+    component: withUnauthorizedUser(SignInPage),
     exact: true
   },
   {
     path: '/signup',
-    component: SignUpPage,
+    component: withUnauthorizedUser(SignUpPage),
     exact: true
   },
   {
     path: '/dashboard',
-    component: DashboardRoutes
+    component: withAuthorizedUser(DashboardRoutes)
   },
   {
     component: NotFoundPage
