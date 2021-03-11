@@ -1,5 +1,5 @@
-import IndexRoutes from './routes/IndexRoutes'
 import withTheme from './hoc/withTheme'
-import './config/firebase'
+import withFirebaseInit from './hoc/withFirebaseInit'
+import IndexRoutes from './routes/IndexRoutes'
 
-export default withTheme(IndexRoutes)
+export default withTheme(withFirebaseInit(IndexRoutes))
