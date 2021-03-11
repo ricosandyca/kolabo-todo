@@ -72,6 +72,7 @@ export default function SignInPage() {
             {/* Email input */}
             <CustomInput
               disabled={isLoading}
+              name='email'
               variant='outlined'
               placeholder='Email'
               type='email'
@@ -86,6 +87,7 @@ export default function SignInPage() {
             {/* Password input */}
             <CustomInput
               disabled={isLoading}
+              name='password'
               variant='outlined'
               placeholder='Password'
               type='password'
