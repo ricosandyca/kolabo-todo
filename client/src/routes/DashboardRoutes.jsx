@@ -1,9 +1,24 @@
-import { signout } from '../services/auth/signout'
+import { Switch, Route, Redirect } from 'react-router-dom'
+
+import TodoPage from '../pages/TodoPage'
+
+const routes = [
+  {
+    path: '/dashboard/todo',
+    component: TodoPage,
+    exact: true
+  },
+  {
+    children: <Redirect to='/dashboard/todo' />
+  }
+]
 
 export default function DashboardRoutes() {
   return (
-    <div>
-      <button onClick={signout}>SIGNOUT</button>
-    </div>
+    <Switch>
+      {routes.map((route, index) => (
+        <Route key={index} {...route} />
+      ))}
+    </Switch>
   )
 }
