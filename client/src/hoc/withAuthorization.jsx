@@ -2,9 +2,8 @@ import { Redirect } from 'react-router-dom'
 import { getCurrentUser } from '../services/auth/current-user'
 
 export function withAuthorizedUser(Content) {
-  const user = getCurrentUser()
-
   return function () {
+    const user = getCurrentUser()
     if (!user)
       return (
         <Redirect to={{
@@ -17,9 +16,9 @@ export function withAuthorizedUser(Content) {
 }
 
 export function withUnauthorizedUser(Content) {
-  const user = getCurrentUser()
-
   return function () {
+    const user = getCurrentUser()
+    console.log(user)
     if (user)
       return (
         <Redirect to={{
