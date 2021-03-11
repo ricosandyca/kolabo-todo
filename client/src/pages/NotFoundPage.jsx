@@ -1,4 +1,5 @@
 import Grid from '@material-ui/core/Grid'
+import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 export default function NotFoundPage() {
   const classes = useStyles()
   return (
-    <div className={classes.root}>
+    <Box className={classes.root}>
       <Grid
         container
         spacing={2}
@@ -37,6 +38,6 @@ export default function NotFoundPage() {
           <Typography variant='body2'>Page Not Found</Typography>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   )
 }
