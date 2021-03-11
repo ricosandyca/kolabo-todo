@@ -1,7 +1,4 @@
-export default function App() {
-  return (
-    <div>
-      Hello World
-    </div>
-  )
-}
+import IndexRoutes from './routes/IndexRoutes'
+import withTheme from './hoc/withTheme'
+
+export default withTheme(IndexRoutes)
