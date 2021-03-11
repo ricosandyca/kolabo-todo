@@ -1,5 +1,9 @@
+import { signout } from '../services/auth/signout'
+
 export default function DashboardRoutes() {
   return (
-    <div>I'm the dashboard page</div>
+    <div>
+      <button onClick={signout}>SIGNOUT</button>
+    </div>
   )
 }

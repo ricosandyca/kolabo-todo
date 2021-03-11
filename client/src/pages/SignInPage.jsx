@@ -1,5 +1,33 @@
-export default function SignInPage() {
+import { signin } from '../services/auth/signin'
+import useInput from '../hooks/useInput'
+import useAlert from '../hooks/useAlert'
+
+export default function SignInPage() {  
+  const emailInput = useInput('')
+  const passwordInput = useInput('')
+  const { Alert, setError, setSuccess, clearAlert } = useAlert()
+
+  const handleSignin = async (e) => {
+    e.preventDefault()
+    clearAlert()
+    const { value: email } = emailInput
+    const { value: password } = passwordInput
+    console.log(email, password)
+    try {
+      const userCred = await signin(email, password)
+      console.log(userCred)
+      setSuccess('Success')
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
   return (
-    <div>I'm the signin page</div>
+    <form onSubmit={handleSignin}>
+      <Alert />
+      <input type='email' {...emailInput} />
+      <input type='password' {...passwordInput} />
+      <input type='submit' value='submit' />
+    </form>
   )
 }
