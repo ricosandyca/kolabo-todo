@@ -140,7 +140,7 @@ export default function SignUpPage() {
               type='submit'
               disabled={isLoading}
             >
-              {isLoading ? <CircularProgress size={24} /> : 'Submit'}
+              {isLoading ? <CircularProgress size={24} /> : 'Create Account'}
             </CustomButton>
 
           </FormGroup>
