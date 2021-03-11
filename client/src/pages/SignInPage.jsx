@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Box from '@material-ui/core/Box'
 import FormGroup from '@material-ui/core/FormGroup'
 import Typography from '@material-ui/core/Typography'
@@ -36,6 +36,13 @@ const useStyles = makeStyles(theme => ({
     paddingRight: theme.spacing(.5),
     paddingLeft: theme.spacing(.5),
     color: theme.palette.grey[700]
+  },
+  link: {
+    color: theme.palette.secondary.main,
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
   }
 }))
 
@@ -116,6 +123,11 @@ export default function SignInPage() {
 
           </FormGroup>
         </form>
+        <Typography variant='body1' align='center'>
+          <Link to='/signup' className={classes.link}>
+            Don't have an account? Sign Up
+          </Link>
+        </Typography>
       </Box>
     </Box>
   )

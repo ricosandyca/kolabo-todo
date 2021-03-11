@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import Box from '@material-ui/core/Box'
 import FormGroup from '@material-ui/core/FormGroup'
 import Typography from '@material-ui/core/Typography'
@@ -36,16 +36,24 @@ const useStyles = makeStyles(theme => ({
     paddingRight: theme.spacing(.5),
     paddingLeft: theme.spacing(.5),
     color: theme.palette.grey[700]
+  },
+  link: {
+    color: theme.palette.secondary.main,
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
   }
 }))
 
 export default function SignUpPage() {
   const classes = useStyles()
+  const histroy = useHistory()
   const emailInput = useInput('')
   const passwordInput = useInput('')
   const passwordConfirmInput = useInput('')
   const [isLoading, setIsLoading] = useState(false)
-  const { Alert, setError, setSuccess, clearAlert } = useAlert()
+  const { Alert, setError, clearAlert } = useAlert()
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -61,7 +69,7 @@ export default function SignUpPage() {
         throw new Error('Password doesn\'t match')
 
       await signup(email, password)
-      setSuccess('Account created')
+      histroy.push('/dashboard')
     } catch (err) {
       setError(err.message)
     }
@@ -137,6 +145,11 @@ export default function SignUpPage() {
 
           </FormGroup>
         </form>
+        <Typography variant='body1' align='center'>
+          <Link to='/signin' className={classes.link}>
+            Already have an account? Sign In
+          </Link>
+        </Typography>
       </Box>
     </Box>
   )
