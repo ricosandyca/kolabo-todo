@@ -18,7 +18,6 @@ export function withAuthorizedUser(Content) {
 export function withUnauthorizedUser(Content) {
   return function () {
     const user = getCurrentUser()
-    console.log(user)
     if (user)
       return (
         <Redirect to={{
