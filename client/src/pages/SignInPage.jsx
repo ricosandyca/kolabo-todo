@@ -118,7 +118,7 @@ export default function SignInPage() {
               type='submit'
               disabled={isLoading}
             >
-              {isLoading ? <CircularProgress size={24} /> : 'Submit'}
+              {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
             </CustomButton>
 
           </FormGroup>
