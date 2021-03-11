@@ -2,6 +2,8 @@ import '../config/firebase'
 import firebase from 'firebase/app'
 import { useEffect, useState } from 'react'
 
+import LoadingPage from '../pages/LoadingPage'
+
 export default function withFirebaseInit(Content) {
   return function () {
     const [isReady, setIsReady] = useState(false)
@@ -13,6 +15,6 @@ export default function withFirebaseInit(Content) {
     }, [])
 
     if (isReady) return <Content />
-    return <div>Loading...</div>
+    return <LoadingPage />
   }
 }
