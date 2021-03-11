@@ -10,6 +10,7 @@ import SignInPage from '../pages/SignInPage'
 import SignUpPage from '../pages/SignUpPage'
 import NotFoundPage from '../pages/NotFoundPage'
 import { withAuthorizedUser, withUnauthorizedUser } from '../hoc/withAuthorization'
+import withFirebaseInit from '../hoc/withFirebaseInit'
 
 const routes = [
   {
@@ -19,17 +20,17 @@ const routes = [
   },
   {
     path: '/signin',
-    component: withUnauthorizedUser(SignInPage),
+    component: withFirebaseInit(withUnauthorizedUser(SignInPage)),
     exact: true
   },
   {
     path: '/signup',
-    component: withUnauthorizedUser(SignUpPage),
+    component: withFirebaseInit(withUnauthorizedUser(SignUpPage)),
     exact: true
   },
   {
     path: '/dashboard',
-    component: withAuthorizedUser(DashboardRoutes)
+    component: withFirebaseInit(withAuthorizedUser(DashboardRoutes))
   },
   {
     component: NotFoundPage
