@@ -36,10 +36,10 @@ export async function getAll(userId) {
  * Create a new task
  * 
  * @param {String} userId 
- * @param {String} body - task body
+ * @param {Task} task - new task
  * @returns {String} created task id
  */
-export async function createOne(userId, body) {
+export async function createOne(userId, task) {
   const userRef = firebase
     .firestore()
     .collection(USER_COLLECTION)
@@ -50,7 +50,7 @@ export async function createOne(userId, body) {
   // create data
   const currentDate = firebase.firestore.Timestamp.fromDate(new Date())
   const newTask = {
-    body,
+    ...task,
     createdAt: currentDate,
     updatedAt: currentDate
   }
