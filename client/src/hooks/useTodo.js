@@ -53,15 +53,16 @@ export function useCreateTodo() {
   return { isLoading, error, createTodo }
 }
 
-export function useToggleTodo() {
+export function useToggleTodo(todo) {
+  const { _id, done = false } = todo
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(undefined)
   
-  const toggleTodo = async (todoId, currentStatus, cb) => {
+  const toggleTodo = async (cb) => {
     try {
       setIsLoading(true)
       const { uid } = getCurrentUser()
-      await updateOne(uid, todoId, { done: !currentStatus })
+      await updateOne(uid, _id, { done: !done })
       setError(undefined)
       cb && cb(true)
     } catch (err) {
@@ -75,15 +76,16 @@ export function useToggleTodo() {
   return { isLoading, error, toggleTodo }
 }
 
-export function useDeleteTodo() {
+export function useDeleteTodo(todo) {
+  const { _id } = todo
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(undefined)
 
-  const deleteTodo = async (todoId, cb) => {
+  const deleteTodo = async (cb) => {
     try {
       setIsLoading(true)
       const { uid } = getCurrentUser()
-      await deleteOne(uid, todoId)
+      await deleteOne(uid, _id)
       setError(undefined)
       cb && cb(true)
     } catch (err) {
