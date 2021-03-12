@@ -49,9 +49,9 @@ const useStyles = makeStyles(theme => ({
 export default function SignUpPage() {
   const classes = useStyles()
   const histroy = useHistory()
-  const emailInput = useInput('')
-  const passwordInput = useInput('')
-  const passwordConfirmInput = useInput('')
+  const { inputProps: emailInput } = useInput('')
+  const { inputProps: passwordInput } = useInput('')
+  const { inputProps: passwordConfirmInput } = useInput('')
   const [isLoading, setIsLoading] = useState(false)
   const { Alert, setError, clearAlert } = useAlert()
 
