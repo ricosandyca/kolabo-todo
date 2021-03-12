@@ -25,7 +25,7 @@ export async function getAll(userId) {
     .doc(userId)
     .collection(TASK_COLLECTION)
 
-  const data = await taskRef.get()
+  const data = await taskRef.orderBy('createdAt', 'desc').get()
   return data.docs.map(doc => ({
     _id: doc.id,
     ...doc.data()
