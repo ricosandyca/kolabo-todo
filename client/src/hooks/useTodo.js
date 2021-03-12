@@ -58,48 +58,48 @@ export function useCreateTodo() {
 
 export function useToggleTodo(todo) {
   const { _id, done = false } = todo
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(undefined)
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [error, setError] = useState(undefined)
   
   const toggleTodo = async (cb) => {
     try {
-      setIsLoading(true)
+      // setIsLoading(true)
       const { uid } = getCurrentUser()
       await updateOne(uid, _id, { done: !done })
-      setError(undefined)
+      // setError(undefined)
       cb && cb(true)
     } catch (err) {
-      setError(err)
+      // setError(err)
       cb && cb(false)
     } finally {
-      setIsLoading(false)
+      // setIsLoading(false)
     }
   }
 
-  return { isLoading, error, toggleTodo }
+  return { toggleTodo }
 }
 
 export function useDeleteTodo(todo) {
   const { _id } = todo
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(undefined)
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [error, setError] = useState(undefined)
 
   const deleteTodo = async (cb) => {
     try {
-      setIsLoading(true)
+      // setIsLoading(true)
       const { uid } = getCurrentUser()
       await deleteOne(uid, _id)
-      setError(undefined)
+      // setError(undefined)
       cb && cb(true)
     } catch (err) {
-      setError(err)
+      // setError(err)
       cb && cb(false)
     } finally {
-      setIsLoading(false)
+      // setIsLoading(false)
     }
   }
 
-  return { isLoading, error, deleteTodo }
+  return { deleteTodo }
 }
 
 export function useSubscription() {
