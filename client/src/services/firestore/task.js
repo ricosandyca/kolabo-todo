@@ -107,3 +107,22 @@ export async function deleteOne(userId, taskId) {
   await taskRef.doc(taskId).delete()
   return taskId
 }
+
+/**
+ * Subscribe for real time changes
+ * 
+ * @param {String} userId 
+ * @param {(change: firebase.firestore.DocumentChange<any>, i: number) => any} cb
+ */
+export function subscribe(userId, cb) {
+  const userRef = firebase
+    .firestore()
+    .collection(USER_COLLECTION)
+  const taskRef = userRef
+    .doc(userId)
+    .collection(TASK_COLLECTION)
+  
+  return taskRef.onSnapshot(snapshot => {
+    snapshot.docChanges().forEach(cb)
+  })
+}
