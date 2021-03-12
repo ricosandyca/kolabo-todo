@@ -9,12 +9,20 @@ service cloud.firestore {
     function isAuthorized() {
       return request.auth != null
     }
+    
+    /**
+     * Check is user the owener
+     * @returns {Boolean}
+     */
+    function isValidUserResource(resId) {
+    	return request.auth.uid == resId
+    }
 
     match /users/{userId} {
-      allow read, write: if isAuthorized() && (userId == request.auth.uid)
+      allow read, write: if isAuthorized() && isValidUserResource(userId)
 
       match /{sub=**} {
-        allow read, write;
+        allow read, write: if isAuthorized() && isValidUserResource(userId)
       }
     }
 
