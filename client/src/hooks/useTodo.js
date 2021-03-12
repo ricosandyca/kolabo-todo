@@ -44,7 +44,7 @@ export function useCreateTodo() {
       cb && cb(true)
     } catch (err) {
       setError(err)
-      cb && cb(true)
+      cb && cb(false)
     } finally {
       setIsLoading(false)
     }
@@ -66,7 +66,7 @@ export function useToggleTodo() {
       cb && cb(true)
     } catch (err) {
       setError(err)
-      cb && cb(true)
+      cb && cb(false)
     } finally {
       setIsLoading(false)
     }
@@ -88,7 +88,7 @@ export function useDeleteTodo() {
       cb && cb(true)
     } catch (err) {
       setError(err)
-      cb && cb(true)
+      cb && cb(false)
     } finally {
       setIsLoading(false)
     }
