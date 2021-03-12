@@ -1,12 +1,15 @@
+import { useSetRecoilState } from 'recoil'
 import { useEffect, useState } from 'react'
 
 import {
   getAll,
   createOne,
   updateOne,
-  deleteOne
+  deleteOne,
+  subscribe
 } from '../services/firestore/task'
 import { getCurrentUser } from '../services/auth/current-user'
+import { todosState } from '../store/todo'
 
 export function useGetAllTodo() {
   const [isLoading, setIsLoading] = useState(true)
@@ -97,4 +100,34 @@ export function useDeleteTodo(todo) {
   }
 
   return { isLoading, error, deleteTodo }
+}
+
+export function useSubscription() {
+  const { uid } = getCurrentUser()
+  const setTodos = useSetRecoilState(todosState)
+
+  useEffect(() => {
+    return subscribe(uid, (change) => {
+      if (change.type === 'added') {
+        const newTodo = {
+          _id: change.doc.id,
+          ...change.doc.data()
+        }
+        setTodos(todos => [newTodo, ...todos])
+      }
+      if (change.type === 'removed') {
+        const removedTodoId = change.doc.id
+        setTodos(todos => todos.filter(todo => todo._id !== removedTodoId))
+      }
+      if (change.type === 'modified') {
+        const updatedTodo = {
+          _id: change.doc.id,
+          ...change.doc.data()
+        }
+        setTodos(todos => todos.map(todo => (
+          todo._id === updatedTodo._id ? updatedTodo : todo
+        )))
+      }
+    })
+  }, [setTodos, uid])
 }
