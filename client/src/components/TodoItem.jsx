@@ -7,6 +7,8 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlineOutlined'
 import Typography from '@material-ui/core/Typography'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
+import { useToggleTodo, useDeleteTodo } from '../hooks/useTodo'
+
 const useStyles = makeStyles(theme => ({
   todoPaper: {
     background: theme.palette.background.default,
@@ -19,6 +21,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function TodoItem({ todo }) {
+  const { toggleTodo } = useToggleTodo(todo)
+  const { deleteTodo } = useDeleteTodo(todo)
   const { body, done } = todo
   const classes = useStyles()
 
@@ -35,6 +39,7 @@ export default function TodoItem({ todo }) {
             <Checkbox
               color='primary'
               checked={done}
+              onClick={() => toggleTodo()}
               />
           </Tooltip>
         </Box>
@@ -52,7 +57,10 @@ export default function TodoItem({ todo }) {
         {/* Delete button */}
         <Box>
           <Tooltip title='Delete'>
-            <IconButton color='secondary'>
+            <IconButton
+              color='secondary'
+              onClick={() => deleteTodo()}
+            >
               <DeleteIcon />
             </IconButton>
           </Tooltip>
