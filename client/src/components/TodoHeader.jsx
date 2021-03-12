@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router-dom'
+import { useResetRecoilState } from 'recoil'
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import Chip from '@material-ui/core/Chip'
@@ -9,6 +10,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 
 import { signout } from '../services/auth/signout'
 import { getCurrentUser } from '../services/auth/current-user'
+import { todosState } from '../store/todo'
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -36,9 +38,11 @@ export default function TodoHeader() {
   const classes = useStyles()
   const histroy = useHistory()
   const user = getCurrentUser()
+  const resetTodos = useResetRecoilState(todosState)
 
   const handleSignOut = () => {
     signout()
+    resetTodos()
     histroy.push('/signin')
   }
 
