@@ -1,7 +1,9 @@
+import { useRecoilValue } from 'recoil'
 import { ThemeProvider } from '@material-ui/core/styles'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 import theme from '../config/theme'
+import { themeState } from '../store/view'
 
 const useStyles = makeStyles(theme => ({
   body: {
@@ -23,8 +25,10 @@ function Body(props) {
 
 export default function withTheme(Content) {
   return function () {
+    const themeType = useRecoilValue(themeState)
+
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme(themeType)}>
         <Body>
           <Content />
         </Body>
