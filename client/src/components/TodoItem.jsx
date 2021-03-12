@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 export default function TodoItem({ todo }) {
   const { toggleTodo } = useToggleTodo(todo)
   const { deleteTodo } = useDeleteTodo(todo)
-  const { body, done } = todo
+  const { body, done = false } = todo
   const classes = useStyles()
 
   return (
@@ -45,7 +45,7 @@ export default function TodoItem({ todo }) {
         </Box>
 
         {/* Todo body */}
-        <Box flex='1' paddingX='5px'>
+        <Box flex='1' padding='5px'>
           <Typography
             variant='body1'
             style={{ textDecoration: done ? 'line-through' : 'none' }}
