@@ -6,7 +6,8 @@ import { useState } from 'react'
  * 
  * @typedef {React.ChangeEvent<HTMLInputElement>} onChangeElm
  * @typedef {e: React.ChangeEvent<HTMLInputElement>) => void} onChange
- * @typedef {{ state: any, onChange: onChange }} useInputHook
+ * @typedef {{ state: any, onChange: onChange }} inputProps
+ * @typedef {{ setValue: any, inputProps: inputProps }} useInputHook
  * 
  * @param {Any} defaultValue - default value of state
  * @returns {useInputHook} of state value and its handle change input
@@ -22,5 +23,8 @@ export default function useInput(defaultValue) {
     setValue(e.target.value)
   }
 
-  return { value, onChange }
+  return {
+    setValue,
+    inputProps: { value, onChange }
+  }
 }

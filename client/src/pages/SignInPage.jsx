@@ -49,8 +49,8 @@ const useStyles = makeStyles(theme => ({
 export default function SignInPage() {
   const classes = useStyles()
   const histroy = useHistory()
-  const emailInput = useInput('')
-  const passwordInput = useInput('')
+  const { inputProps: emailInput } = useInput('')
+  const { inputProps: passwordInput } = useInput('')
   const [isLoading, setIsLoading] = useState(false)
   const { Alert, setError, clearAlert } = useAlert()
 
