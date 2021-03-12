@@ -5,17 +5,21 @@ import Typography from '@material-ui/core/Typography'
 import Chip from '@material-ui/core/Chip'
 import Avatar from '@material-ui/core/Avatar'
 import Tooltip from '@material-ui/core/Tooltip'
+import IconButton from '@material-ui/core/IconButton'
 import SignOutIcon from '@material-ui/icons/ExitToAppOutlined'
+import NightIcon from '@material-ui/icons/Brightness2'
+import LightIcon from '@material-ui/icons/WbSunny'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 
 import { signout } from '../services/auth/signout'
 import { getCurrentUser } from '../services/auth/current-user'
 import { todosState } from '../store/todo'
+import { useToggleTheme } from '../hooks/useTheme'
 
 const useStyles = makeStyles(theme => ({
   title: {
     fontFamily: '"Poppins", sans-serif',
-    fontSize: '26px',
+    fontSize: '24px',
     fontWeight: 600,
     letterSpacing: '.5px',
     marginBottom: theme.spacing(1)
@@ -39,6 +43,7 @@ export default function TodoHeader() {
   const histroy = useHistory()
   const user = getCurrentUser()
   const resetTodos = useResetRecoilState(todosState)
+  const { theme, toggleTheme } = useToggleTheme()
 
   const handleSignOut = () => {
     signout()
@@ -50,19 +55,33 @@ export default function TodoHeader() {
     <Box display='flex' flexDirection='row' justifyContent='center'>
       <Box textAlign='center'>
         <Typography className={classes.title}>Thingstodo</Typography>
+
+        {/* Toggle theme button */}
+        <Tooltip title='Toggle Theme'>
+          <IconButton color='primary' onClick={toggleTheme}>
+            {theme === 'light' ? (
+              <NightIcon style={{ fontSize: '18px' }} />
+            ) : (
+              <LightIcon style={{ fontSize: '18px' }} />
+            )}
+          </IconButton>
+        </Tooltip>
+
+        {/* Account chip */}
         <Chip
           label={user.email}
           color='primary'
           className={classes.chip}
           onDelete={handleSignOut}
           deleteIcon={(
-            <Tooltip title='Sign Out' placement='right'>
+            <Tooltip title='Sign Out'>
               <Avatar className={classes.avatar}>
                 <SignOutIcon style={{ fontSize: '18px' }} />
               </Avatar>
             </Tooltip>
           )}
         />
+
       </Box>
     </Box>
   )
