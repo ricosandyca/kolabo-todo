@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import MUIAlert from '@material-ui/lab/Alert'
 
 /**
@@ -28,30 +28,30 @@ export default function useAlert() {
    * Set alert to error
    * @param {string} err - error object
    */
-  const setError = (message) => {
+  const setError = useCallback((message) => {
     setValue({
       type: 'error',
       message
     })
-  }
+  }, [setValue])
 
   /**
    * Set alert to success
    * @param {String} message - success message
    */
-  const setSuccess = (message) => {
+  const setSuccess = useCallback((message) => {
     setValue({
       type: 'success',
       message
     })
-  }
+  }, [setValue])
 
   /**
    * Clear alert state
    */
-  const clearAlert = () => {
+  const clearAlert = useCallback(() => {
     setValue(undefined)
-  }
+  }, [setValue])
 
   /**
    * Alert element
