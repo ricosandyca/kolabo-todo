@@ -4,6 +4,10 @@
     "indexes": "firestore/firestore.indexes.json"
   },
   "hosting": {
+    "predeploy": [
+      "yarn --cwd client install --frozen-lockfile",
+      "yarn --cwd client build"
+    ],
     "public": "client/build",
     "ignore": [
       "firebase.json",
