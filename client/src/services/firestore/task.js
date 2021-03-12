@@ -3,8 +3,6 @@ import firebase from 'firebase/app'
 const USER_COLLECTION = 'users'
 const TASK_COLLECTION = 'tasks'
 
-const userRef = firebase.firestore().collection(USER_COLLECTION)
-
 /**
  * Get all tasks by user id
  * 
@@ -20,6 +18,9 @@ const userRef = firebase.firestore().collection(USER_COLLECTION)
  * @returns {Task[]} task list
  */
 export async function getAll(userId) {
+  const userRef = firebase
+    .firestore()
+    .collection(USER_COLLECTION)
   const taskRef = userRef
     .doc(userId)
     .collection(TASK_COLLECTION)
@@ -39,6 +40,9 @@ export async function getAll(userId) {
  * @returns {String} created task id
  */
 export async function createOne(userId, body) {
+  const userRef = firebase
+    .firestore()
+    .collection(USER_COLLECTION)
   const taskRef = userRef
     .doc(userId)
     .collection(TASK_COLLECTION)
@@ -69,6 +73,9 @@ export async function createOne(userId, body) {
  * @returns {String} updated task id
  */
 export async function updateOne(userId, taskId, updateTask) {
+  const userRef = firebase
+    .firestore()
+    .collection(USER_COLLECTION)
   const taskRef = userRef
     .doc(userId)
     .collection(TASK_COLLECTION)
@@ -90,10 +97,13 @@ export async function updateOne(userId, taskId, updateTask) {
  * @returns {String} deleted task id
  */
 export async function deleteOne(userId, taskId) {
+  const userRef = firebase
+    .firestore()
+    .collection(USER_COLLECTION)
   const taskRef = userRef
     .doc(userId)
     .collection(TASK_COLLECTION)
 
   await taskRef.doc(taskId).delete()
-  return todoId
+  return taskId
 }
