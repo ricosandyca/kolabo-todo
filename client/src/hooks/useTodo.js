@@ -32,16 +32,19 @@ export function useGetAllTodo() {
 }
 
 export function useCreateTodo() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(undefined)
 
-  const createTodo = async body => {
+  const createTodo = async (body, cb) => {
     try {
+      setIsLoading(true)
       const { uid } = getCurrentUser()
       await createOne(uid, { body })
       setError(undefined)
+      cb && cb(true)
     } catch (err) {
       setError(err)
+      cb && cb(true)
     } finally {
       setIsLoading(false)
     }
@@ -51,16 +54,19 @@ export function useCreateTodo() {
 }
 
 export function useToggleTodo() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(undefined)
   
-  const toggleTodo = async (todoId, currentStatus) => {
+  const toggleTodo = async (todoId, currentStatus, cb) => {
     try {
+      setIsLoading(true)
       const { uid } = getCurrentUser()
       await updateOne(uid, todoId, { done: !currentStatus })
       setError(undefined)
+      cb && cb(true)
     } catch (err) {
       setError(err)
+      cb && cb(true)
     } finally {
       setIsLoading(false)
     }
@@ -70,16 +76,19 @@ export function useToggleTodo() {
 }
 
 export function useDeleteTodo() {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(undefined)
 
-  const deleteTodo = async todoId => {
+  const deleteTodo = async (todoId, cb) => {
     try {
+      setIsLoading(true)
       const { uid } = getCurrentUser()
       await deleteOne(uid, todoId)
       setError(undefined)
+      cb && cb(true)
     } catch (err) {
       setError(err)
+      cb && cb(true)
     } finally {
       setIsLoading(false)
     }
