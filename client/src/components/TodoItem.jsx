@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
   todoPaper: {
     background: theme.palette.background.default,
     padding: '5px',
-    marginBottom: theme.spacing(1.5)
+    marginBottom: theme.spacing(.7)
   },
   doneTodo: {
     background: theme.palette.background.paper

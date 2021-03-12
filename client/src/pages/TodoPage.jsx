@@ -12,9 +12,9 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     width: '100%',
     maxWidth: '610px',
-    margin: `${theme.spacing(5)}px ${theme.spacing(2)}px`,
+    margin: `${theme.spacing(5)}px ${theme.spacing(3)}px`,
     '& > *': {
-      marginBottom: theme.spacing(3)
+      marginBottom: theme.spacing(3.5)
     }
   }
 }))
