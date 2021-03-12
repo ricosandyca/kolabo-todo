@@ -122,7 +122,7 @@ export function subscribe(userId, cb) {
     .doc(userId)
     .collection(TASK_COLLECTION)
   
-  return taskRef.onSnapshot(snapshot => {
+  return taskRef.orderBy('createdAt', 'asc').onSnapshot(snapshot => {
     snapshot.docChanges().forEach(cb)
   })
 }
