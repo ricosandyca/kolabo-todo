@@ -13,6 +13,12 @@ export function getUserListener(userId, cb) {
     });
 }
 
+export async function replaceTasks(userId, tasks) {
+  const db = firebase.firestore();
+  return await db.collection(USERS_COLLECTION).doc(userId).update({ tasks });
+}
+
+/** @deprecated */
 export async function createTask(userId, task) {
   const db = firebase.firestore();
   const userRef = db.collection(USERS_COLLECTION).doc(userId);
@@ -37,6 +43,7 @@ export async function createTask(userId, task) {
   });
 }
 
+/** @deprecated */
 export async function toggleTask(userId, taskId) {
   const db = firebase.firestore();
   const userRef = db.collection(USERS_COLLECTION).doc(userId);
@@ -62,6 +69,7 @@ export async function toggleTask(userId, taskId) {
   });
 }
 
+/** @deprecated */
 export async function updateTask(userId, taskId, updateTask) {
   const db = firebase.firestore();
   const userRef = db.collection(USERS_COLLECTION).doc(userId);
@@ -87,11 +95,7 @@ export async function updateTask(userId, taskId, updateTask) {
   });
 }
 
-export async function setTasks(userId, tasks) {
-  const db = firebase.firestore();
-  return await db.collection(USERS_COLLECTION).doc(userId).update({ tasks });
-}
-
+/** @deprecated */
 export async function deleteTask(userId, taskId) {
   const db = firebase.firestore();
   const userRef = db.collection(USERS_COLLECTION).doc(userId);

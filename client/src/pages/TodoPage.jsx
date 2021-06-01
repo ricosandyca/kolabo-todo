@@ -4,6 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles'
 import TodoHeader from '../components/TodoHeader'
 import TodoInputCreation from '../components/TodoInputCreation'
 import TodoList from '../components/TodoList'
+import { useTasks } from "../hooks/useTask";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function TodoPage() {
   const classes = useStyles()
+  const actions = useTasks();
 
   return (
     <Box className={classes.root} display='flex' justifyContent='center'>
@@ -28,9 +30,9 @@ export default function TodoPage() {
         {/* Header */}
         <TodoHeader />
         {/* Todo input creation */}
-        <TodoInputCreation />
+        <TodoInputCreation actions={actions} />
         {/* Todo list */}
-        <TodoList />
+        <TodoList actions={actions} />
       </Box>
     </Box>
   )

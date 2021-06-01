@@ -9,7 +9,7 @@ export default function withFirebaseInit(Content) {
     const [isReady, setIsReady] = useState(false)
 
     useEffect(() => {
-      firebase.auth().onAuthStateChanged(user => {
+      firebase.auth().onAuthStateChanged(() => {
         setIsReady(true)
       })
     }, [])

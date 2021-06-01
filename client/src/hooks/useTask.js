@@ -1,21 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { generateId } from "../services/firestore";
-import {
-  getUserListener,
-  createTask,
-  updateTask,
-  toggleTask,
-  deleteTask,
-  setTasks,
-} from "../services/firestore/user";
+import { getUserListener, replaceTasks } from "../services/firestore/user";
 import { getCurrentUser } from "../services/auth/current-user";
 import reorder from "../utils/reorder";
 
 export function useTasks() {
   const { uid } = getCurrentUser();
-  const [isLoading, setIsLoading] = useState(true);
+
   const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isCreateTaskLoading, setIsCreateTaskLoading] = useState(false);
+  const [isUpdateTaskLoading, setIsUpdateTaskLoading] = useState(false);
+  const [isDeleteTaskLoading, setIsDeleteTaskLoading] = useState(false);
+  const [isToggleTaskLoading, setIsToggleTaskLoading] = useState(false);
 
   useEffect(() => {
     getUserListener(uid, (user) => {
@@ -24,41 +22,34 @@ export function useTasks() {
     });
   }, [uid]);
 
-  return { isLoading, tasks };
-}
+  const onReorderTasks = useCallback(
+    async (tasks, payload) => {
+      const { source, destination } = payload;
+      if (!destination) return;
 
-export function useTaskActions() {
-  const { uid } = getCurrentUser();
-  const [isCreateTaskLoading, setIsCreateTaskLoading] = useState(false);
-  const [isUpdateTaskLoading, setIsUpdateTaskLoading] = useState(false);
-  const [isDeleteTaskLoading, setIsDeleteTaskLoading] = useState(false);
-  const [isToggleTaskLoading, setIsToggleTaskLoading] = useState(false);
-
-  const onReorderTasks = useCallback(async (tasks, payload) => {
-    const { source, destination } = payload;
-    if (!destination) return;
-
-    // dragging and dropping in the same area
-    if (source.droppableId === destination.droppableId) {
-      reorder(tasks, source.index, destination.index);
-      await setTasks(uid, tasks);
-    }
-  }, [uid]);
+      // dragging and dropping in the same area
+      if (source.droppableId === destination.droppableId) {
+        reorder(tasks, source.index, destination.index);
+        await replaceTasks(uid, tasks);
+      }
+    },
+    [uid]
+  );
 
   const onCreateTask = useCallback(
     async (body) => {
       if (!uid) return;
       try {
         setIsCreateTaskLoading(true);
-        const newTask = { id: generateId(), body };
-        await createTask(uid, newTask);
+        const newTasks = [{ id: generateId(), body }, ...tasks];
+        await replaceTasks(uid, newTasks);
       } catch (err) {
         console.log(err);
       } finally {
         setIsCreateTaskLoading(false);
       }
     },
-    [uid]
+    [uid, tasks]
   );
 
   const onUpdateTask = useCallback(
@@ -67,14 +58,18 @@ export function useTaskActions() {
       if (!taskId) return;
       try {
         setIsUpdateTaskLoading(true);
-        await updateTask(uid, taskId, { body });
+        const newTasks = tasks.map((task) => {
+          if (task.id === taskId) return { ...task, body };
+          return task;
+        });
+        await replaceTasks(uid, newTasks);
       } catch (err) {
         console.log(err);
       } finally {
         setIsUpdateTaskLoading(false);
       }
     },
-    [uid]
+    [uid, tasks]
   );
 
   const onDeleteTask = useCallback(
@@ -83,14 +78,15 @@ export function useTaskActions() {
       if (!taskId) return;
       try {
         setIsDeleteTaskLoading(true);
-        await deleteTask(uid, taskId);
+        const newTasks = tasks.filter((task) => task.id !== taskId);
+        await replaceTasks(uid, newTasks);
       } catch (err) {
         console.log(err);
       } finally {
         setIsDeleteTaskLoading(false);
       }
     },
-    [uid]
+    [uid, tasks]
   );
 
   const onToggleTask = useCallback(
@@ -99,22 +95,28 @@ export function useTaskActions() {
       if (!taskId) return;
       try {
         setIsToggleTaskLoading(true);
-        await toggleTask(uid, taskId);
+        const newTasks = tasks.map((task) => {
+          if (task.id === taskId) return { ...task, done: !task.done };
+          return task;
+        });
+        await replaceTasks(uid, newTasks);
       } catch (err) {
         console.log(err);
       } finally {
         setIsToggleTaskLoading(false);
       }
     },
-    [uid]
+    [uid, tasks]
   );
 
   return {
+    tasks,
     createTask: onCreateTask,
     updateTask: onUpdateTask,
     deleteTask: onDeleteTask,
     toggleTask: onToggleTask,
     onReorderTasks,
+    isLoading,
     isCreateTaskLoading,
     isUpdateTaskLoading,
     isDeleteTaskLoading,
