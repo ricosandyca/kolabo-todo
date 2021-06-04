@@ -10,8 +10,11 @@ export default function TodoInputCreation({ actions }) {
   const { createTask, isCreateTaskLoading } = actions;
 
   const handleSubmit = (e) => {
+    const value = todoInput.inputProps.value;
     e.preventDefault();
-    createTask(todoInput.inputProps.value);
+    // no value
+    if (!value || value.trim() === "") return;
+    createTask(value);
     todoInput.setValue("");
   };
 

@@ -3,7 +3,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import TodoItem from "./TodoItem";
 
 export default function TodoList({ actions }) {
-  const { tasks, toggleTask, deleteTask, onReorderTasks } = actions;
+  const { tasks, toggleTask, deleteTask, updateTask, onReorderTasks } = actions;
 
   const onDragEnd = (result) => {
     onReorderTasks(tasks, result);
@@ -21,6 +21,7 @@ export default function TodoList({ actions }) {
                 task={task}
                 onToggleTask={toggleTask}
                 onDeleteTask={deleteTask}
+                onUpdateTask={updateTask}
               />
             ))}
             {provided.placeholder}
