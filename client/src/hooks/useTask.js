@@ -16,7 +16,7 @@ export function useTasks() {
   const [isToggleTaskLoading, setIsToggleTaskLoading] = useState(false);
 
   useEffect(() => {
-    getUserListener(uid, (user) => {
+    return getUserListener(uid, (user) => {
       setTasks(user?.tasks || []);
       setIsLoading(false);
     });
@@ -29,6 +29,9 @@ export function useTasks() {
 
       // dragging and dropping in the same area
       if (source.droppableId === destination.droppableId) {
+        // didn't move anywhere
+        if (source.index === destination.index) return;
+
         reorder(tasks, source.index, destination.index);
         await replaceTasks(uid, tasks);
       }
