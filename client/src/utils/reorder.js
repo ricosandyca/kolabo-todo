@@ -1,4 +1,3 @@
-
 /**
  * Reorder array position
  * Used to reorder drag and drop (react-beautiful-dnd)
