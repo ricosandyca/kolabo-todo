@@ -9,6 +9,7 @@ export function useTasks() {
   const { uid } = getCurrentUser();
 
   const [tasks, setTasks] = useState([]);
+  const [doneTasks, setDoneTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateTaskLoading, setIsCreateTaskLoading] = useState(false);
   const [isUpdateTaskLoading, setIsUpdateTaskLoading] = useState(false);
@@ -18,12 +19,17 @@ export function useTasks() {
   useEffect(() => {
     return getUserListener(uid, (user) => {
       setTasks(user?.tasks || []);
+      setDoneTasks(user?.done_tasks || []);
       setIsLoading(false);
     });
   }, [uid]);
 
   const onReorderTasks = useCallback(
-    async (tasks, payload) => {
+    async (payload) => {
+      const allTask = {
+        done_tasks: doneTasks,
+        tasks: tasks,
+      };
       const { source, destination } = payload;
       if (!destination) return;
 
@@ -32,11 +38,24 @@ export function useTasks() {
         // didn't move anywhere
         if (source.index === destination.index) return;
 
-        reorder(tasks, source.index, destination.index);
-        await replaceTasks(uid, tasks);
+        const key = source.droppableId;
+        reorder(allTask[key], source.index, destination.index);
+        await replaceTasks(uid, allTask);
+      } else {
+        const sourceKey = source.droppableId;
+        const destKey = destination.droppableId;
+
+        // remove task from source
+        const [removed] = allTask[sourceKey].splice(source.index, 1);
+        // toggle removed task done status
+        removed.done = !removed.done;
+        // put removed task to destination
+        allTask[destKey].splice(destination.index, 0, removed);
+
+        await replaceTasks(uid, allTask);
       }
     },
-    [uid]
+    [uid, tasks, doneTasks]
   );
 
   const onCreateTask = useCallback(
@@ -45,7 +64,7 @@ export function useTasks() {
       try {
         setIsCreateTaskLoading(true);
         const newTasks = [{ id: generateId(), body }, ...tasks];
-        await replaceTasks(uid, newTasks);
+        await replaceTasks(uid, { tasks: newTasks });
       } catch (err) {
         console.log(err);
       } finally {
@@ -65,14 +84,18 @@ export function useTasks() {
           if (task.id === taskId) return { ...task, body };
           return task;
         });
-        await replaceTasks(uid, newTasks);
+        const newDoneTasks = doneTasks.map((task) => {
+          if (task.id === taskId) return { ...task, body };
+          return task;
+        });
+        await replaceTasks(uid, { tasks: newTasks, done_tasks: newDoneTasks });
       } catch (err) {
         console.log(err);
       } finally {
         setIsUpdateTaskLoading(false);
       }
     },
-    [uid, tasks]
+    [uid, tasks, doneTasks]
   );
 
   const onDeleteTask = useCallback(
@@ -82,14 +105,15 @@ export function useTasks() {
       try {
         setIsDeleteTaskLoading(true);
         const newTasks = tasks.filter((task) => task.id !== taskId);
-        await replaceTasks(uid, newTasks);
+        const newDoneTasks = doneTasks.filter((task) => task.id !== taskId);
+        await replaceTasks(uid, { tasks: newTasks, done_tasks: newDoneTasks });
       } catch (err) {
         console.log(err);
       } finally {
         setIsDeleteTaskLoading(false);
       }
     },
-    [uid, tasks]
+    [uid, tasks, doneTasks]
   );
 
   const onToggleTask = useCallback(
@@ -98,22 +122,37 @@ export function useTasks() {
       if (!taskId) return;
       try {
         setIsToggleTaskLoading(true);
-        const newTasks = tasks.map((task) => {
+        let allTask = [...tasks, ...doneTasks];
+
+        // toggle task status
+        allTask = allTask.map((task) => {
           if (task.id === taskId) return { ...task, done: !task.done };
           return task;
         });
-        await replaceTasks(uid, newTasks);
+
+        // break down all tasks into tasks and done_tasks
+        allTask = allTask.reduce(
+          (acc, task) => {
+            const key = task.done ? "done_tasks" : "tasks";
+            acc[key].push(task);
+            return acc;
+          },
+          { done_tasks: [], tasks: [] }
+        );
+
+        await replaceTasks(uid, allTask);
       } catch (err) {
         console.log(err);
       } finally {
         setIsToggleTaskLoading(false);
       }
     },
-    [uid, tasks]
+    [uid, tasks, doneTasks]
   );
 
   return {
     tasks,
+    doneTasks,
     createTask: onCreateTask,
     updateTask: onUpdateTask,
     deleteTask: onDeleteTask,

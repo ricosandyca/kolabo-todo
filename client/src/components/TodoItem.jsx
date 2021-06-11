@@ -24,20 +24,6 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.background.paper,
     },
   },
-  doneTodo: {
-    borderColor: theme.palette.secondary.main,
-    "&::before": {
-      background: theme.palette.secondary.main,
-      content: "''",
-      zIndex: 0,
-      width: "100%",
-      height: "100%",
-      position: "absolute",
-      top: 0,
-      left: 0,
-      opacity: 0.15,
-    },
-  },
   dragging: {
     background: theme.palette.background.paper,
   },
@@ -55,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
       left: 0,
       opacity: 0.075,
     },
+  },
+  done: {
+    opacity: 0.4,
   },
 }));
 
@@ -95,7 +84,6 @@ export default function TodoItem({
           variant="outlined"
           className={cn(
             classes.todoPaper,
-            { [classes.doneTodo]: done },
             { [classes.dragging]: isDragging },
             { [classes.editing]: isEditing }
           )}
@@ -108,6 +96,7 @@ export default function TodoItem({
             flexDirection="row"
             justifyContent="space-between"
             alignItems="center"
+            className={cn({ [classes.done]: done })}
           >
             {/* Checkbox */}
             <Box zIndex={3}>
