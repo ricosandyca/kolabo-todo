@@ -5,11 +5,9 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import TodoHeader from "../components/TodoHeader";
 import TodoInputCreation from "../components/TodoInputCreation";
 import TodoList from "../components/TodoList";
+import NyanAnimation from "../components/NyanAnimation";
 import { useTasks } from "../hooks/useTask";
-import { nyanState, themeState } from "../store/view";
-
-import nyancatDark from "../assets/nyancat-dark.svg";
-import nyancatLight from "../assets/nyancat-light.svg";
+import { nyanState } from "../store/view";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 export default function TodoPage() {
   const classes = useStyles();
   const actions = useTasks();
-  const theme = useRecoilValue(themeState);
   const nyan = useRecoilValue(nyanState);
 
   return (
@@ -50,13 +47,7 @@ export default function TodoPage() {
         <TodoList actions={actions} />
       </Box>
       {/* nyancat animation */}
-      {nyan && (
-        <img
-          className={classes.nyancat}
-          src={theme === "light" ? nyancatLight : nyancatDark}
-          alt="nyan-cat"
-        />
-      )}
+      {nyan && <NyanAnimation className={classes.nyancat} />}
     </Box>
   );
 }
