@@ -8,11 +8,12 @@ import IconButton from "@material-ui/core/IconButton";
 import SignOutIcon from "@material-ui/icons/ExitToAppOutlined";
 import NightIcon from "@material-ui/icons/Brightness2";
 import LightIcon from "@material-ui/icons/WbSunny";
+import PetIcon from "@material-ui/icons/Pets";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 import { signout } from "../services/auth/signout";
 import { getCurrentUser } from "../services/auth/current-user";
-import { useToggleTheme } from "../hooks/useTheme";
+import { useToggleTheme, useToggleNyan } from "../hooks/useTheme";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -41,6 +42,7 @@ export default function TodoHeader() {
   const histroy = useHistory();
   const user = getCurrentUser();
   const { theme, toggleTheme } = useToggleTheme();
+  const { nyan, toggleNyan } = useToggleNyan();
 
   const handleSignOut = () => {
     signout();
@@ -77,6 +79,16 @@ export default function TodoHeader() {
             </Tooltip>
           }
         />
+
+        {/* Toggle nyan button */}
+        <Tooltip title="Nyan Power">
+          <IconButton
+            color={nyan ? "secondary" : "primary"}
+            onClick={toggleNyan}
+          >
+            <PetIcon style={{ fontSize: "18px" }} />
+          </IconButton>
+        </Tooltip>
       </Box>
     </Box>
   );

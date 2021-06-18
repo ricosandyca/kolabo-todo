@@ -34,25 +34,23 @@ export default function TodoList({ actions }) {
         )}
       </Droppable>
       <Divider style={{ marginBottom: "28px" }} />
-      <Box>
-        <Droppable droppableId="done_tasks">
-          {(provided) => (
-            <Box ref={provided.innerRef} {...provided.droppableProps}>
-              {doneTasks?.map((task, i) => (
-                <TodoItem
-                  key={task.id}
-                  index={i}
-                  task={task}
-                  onToggleTask={toggleTask}
-                  onDeleteTask={deleteTask}
-                  onUpdateTask={updateTask}
-                />
-              ))}
-              {provided.placeholder}
-            </Box>
-          )}
-        </Droppable>
-      </Box>
+      <Droppable droppableId="done_tasks">
+        {(provided) => (
+          <Box ref={provided.innerRef} {...provided.droppableProps}>
+            {doneTasks?.map((task, i) => (
+              <TodoItem
+                key={task.id}
+                index={i}
+                task={task}
+                onToggleTask={toggleTask}
+                onDeleteTask={deleteTask}
+                onUpdateTask={updateTask}
+              />
+            ))}
+            {provided.placeholder}
+          </Box>
+        )}
+      </Droppable>
     </DragDropContext>
   );
 }
